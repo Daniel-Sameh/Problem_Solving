@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define dodo ios_base::sync_with_stdio(false);cin.tie(nullptr)
+#define ll long long
+//School lecture Schedule implementation
+int main() {
+//    dodo;
+    map<string,vector<pair<string,string>>>mp;
+    vector<string> days={"saturday","monday","tuesday","wednesday","thursday"};
+    int lec;
+    cout<<"ENTER the number of lectures: ";
+    cin>>lec;
+    cout<<"You will enter each subject name then the teacher name!\n";
+    string sub,teach;
+    for (auto d:days) {
+        vector<pair<string,string>>t;
+        cout<<d<<": ";
+        for (int i = 0; i < lec; ++i) {
+            cin>>sub>>teach;
+            t.emplace_back(sub,teach);
+        }
+        mp[d]=t;
+    }
+    cout<<"Enter the teacher you want: ";
+    cin>>teach;
+    for (auto i:days) {
+        cout<<i<<": ";
+        for (auto sub:mp[i]) {
+            if (sub.second==teach)
+                cout<<'{'<<sub.first<<":"<<sub.second<<"} ";
+            else
+                cout<<"---- ";
+        }
+        cout<<'\n';
+    }
+
+
+}
