@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int N=2e5+5;
+vector<bool>visited(N);
+vector<vector<int>>adj(N);
+vector<int>vis;
+void dfs(int node){
+    visited[node]=true;
+    vis.push_back(node);
+    for (auto i:adj[node]) {
+        if (!visited[i])
+            dfs(i);
+    }
+}
+
+int main() {
+    int n,x,y,e; cin>>n>>e;
+    for (int i = 0; i < e; ++i) {
+        cin>>x>>y;
+        adj[x].push_back(y);
+        adj[y].push_back(x);
+    }
+    for (int i = 1; i <= n; ++i) {
+        if (!visited[i])
+            dfs(i);
+    }
+    int ans=0;
+    vector<vector<int>>z(n);
+    for (int i = 1; i <= n; ++i) {
+        if (!visited[i]){
+            z[ans].push_back(i-1);
+            z[ans].push_back(i);
+            ++ans;
+            dfs(i);
+        }
+    }
+    cout<<ans<<'\n';
+    for (int i = 0; i < ans; ++i) {
+        for (auto a:z[i]) {
+            cout<<a<<' ';
+        }
+        cout<<"\n";
+    }
+
+
+    /*
+     * 0 1 2 3
+     * 1 0 2
+     * 2 4
+     * 3 4
+     * 4 2 3
+     */
+}
