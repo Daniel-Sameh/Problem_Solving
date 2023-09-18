@@ -6,6 +6,6 @@ This repository is to collect the topics algorithms and codes used in problem so
  
 |no|   Topic      |
 |--:|-------------|
-| 1 |Number theory|
-|2 | DFS          |
+| 1 |            |
+|2 |           |
 </details>
