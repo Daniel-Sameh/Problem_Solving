@@ -1,0 +1,127 @@
+/*
+ * By Daniel Sameh
+ * 7-2023
+ */
+#include <bits/stdc++.h>
+using namespace std;
+#define dodo ios_base::sync_with_stdio(false);cin.tie(nullptr)
+//O(sqrt(n))
+bool isPrime(int x) {
+    if (x==1||x==0)return false;
+    for (int i = 2; i <= x/i; i+= 1+(i&1)) {
+        if (x%i==0)return false;
+    }
+    return true;
+}
+//O(sqrt(n)+log(n))= O(sqrt(n))
+vector<int> factorize(int n){
+    vector<int>ret;
+    for (int i = 2; i <= n/i; i+= 1+(i&1)) {
+        while (n%i==0){
+            ret.push_back(i);
+            n/=i;
+        }
+    }
+    if (n>1)
+        ret.push_back(n);
+    return ret;
+}
+//O(sqrt(n))
+vector<int> divisors(int n){
+    vector<int>ret;
+    for (int i = 1; i <= n/i ; ++i) {
+        if (n%i==0){
+            ret.push_back(i);
+            if (i*i!=n)
+                ret.push_back(n/i);
+        }
+    }
+    return ret;
+}
+const int N= 1e6+7;
+bool prime[N];
+void sieve(){ //Nlog(N) rough estimation.
+    memset(prime,1, sizeof prime); // to make all elements=1
+    prime[0]=prime[1]= false;
+    for (int i = 2; i < N/i; ++i) {
+        if (prime[i]){
+            for (int j = i*i; j < N; j+=i) {
+                prime[j]=false;
+            }
+        }
+    }
+}
+int comp[N];
+void modified_sieve(){
+    iota(comp, comp+N, 0); //make all comp[i]=i (ex: comp[5]=5)
+    comp[0]=comp[1]==-1;
+    for (int i = 2; i < N/i; ++i) {
+        if (comp[i]==i)
+            for (int j = i*i; j < N; j+=i) {
+                if (comp[j]==j)
+                    comp[j]=i;
+            }
+    }
+}
+//O(log(n))
+vector<int> factorize_log(int n){
+    vector<int>ret;
+    while (n>1){
+        ret.push_back(comp[n]);
+        n /= comp[n];
+    }
+    return ret;
+}
+vector<pair<int,int>> factorize3(int n){
+    vector<pair<int,int>>ret;
+    while (n>1){
+        int curr= comp[n];
+        int count=0;
+        while (n%curr==0){
+            ++count;
+            n/=curr;
+        }
+        ret.emplace_back(curr,count);
+    }
+    return ret;
+}
+
+int main() {
+    dodo;
+    int n=100;
+    sieve();
+    modified_sieve();
+    for (int i = 0; i <= n; ++i) {
+//        cout<<i<<" is "<<(isPrime(i)?"prime\n":"normal\n");
+        cout<<i;
+        vector<int>fact= divisors(i);
+        cout<<": ";
+        for (int v:fact) {
+            cout<<v<<' ';
+        }
+        cout<<endl;
+    }
+
+//    for (int i = 1; i <=100 ; ++i) {
+//        cout<<i<<": ";
+//        vector<int>div= divisors(i);
+//        std::sort(div.begin(), div.end());
+//        for (auto v:div) {
+//            cout<<v<<' ';
+//        }
+//        cout<<endl;
+//    }
+
+    for (int i = 0; i < 100; ++i) {
+        auto ret= factorize3(i);
+        cout<<i<<": ";
+        for (auto v:ret) {
+            cout<<v.first<<'^'<<v.second<<' ';
+        }
+        cout<<'\n';
+    }
+    auto xx= factorize3(0);
+    auto xy= factorize(5);
+    auto yy= factorize_log(3);
+    auto vv= isPrime(2);
+}
